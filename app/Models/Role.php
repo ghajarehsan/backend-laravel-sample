@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Traits\Admin\PermissionRole\HasPermissionRole;
+use App\Services\PermissionRole\HasPermissionRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use SplObserver;

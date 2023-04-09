@@ -3,12 +3,6 @@
 use Illuminate\Support\Facades\Route;
 
 
-//authentication
-Route::group(['prefix' => 'auth'], function () {
-    Route::post('sendOtpCode', [\App\Http\Controllers\Common\AuthController::class, 'sendOtpCode']);
-    Route::post('checkOtpCode', [\App\Http\Controllers\Common\AuthController::class, 'checkOtpCode']);
-});
-
 //permission
 Route::group(['prefix' => 'permission'], function () {
     //give permissions to user
@@ -23,9 +17,24 @@ Route::group(['prefix' => 'permission'], function () {
     Route::post('givePermissionToRole', [\App\Http\Controllers\Admin\PermissionRoleController::class, 'givePermissionToRole']);
     Route::post('detachPermissionToRole', [\App\Http\Controllers\Admin\PermissionRoleController::class, 'detachPermissionToRole']);
     Route::post('addPermissionToRole', [\App\Http\Controllers\Admin\PermissionRoleController::class, 'addPermissionToRole']);
+    //permission category
+    Route::post('newPermissionCategory', [\App\Http\Controllers\Admin\PermissionRoleController::class, 'newPermissionCategory']);
+    Route::post('editPermissionCategory/{permissionCategory}', [\App\Http\Controllers\Admin\PermissionRoleController::class, 'editPermissionCategory']);
+    Route::get('getAllCategoryPermission', [\App\Http\Controllers\Admin\PermissionRoleController::class, 'getAllCategoryPermission']);
+});
+
+//department
+Route::group(['prefix' => 'userDepartmentPost'], function () {
+    //posts
+    Route::post('newUserPost', [\App\Http\Controllers\Admin\UserDepartmentPostController::class, 'newUserPost']);
+    Route::get('getAllPost', [\App\Http\Controllers\Admin\UserDepartmentPostController::class, 'getAllPost']);
+    //departments
+    Route::post('newUserDepartment', [\App\Http\Controllers\Admin\UserDepartmentPostController::class, 'newUserDepartment']);
+    Route::get('getAllDepartment/{department_id?}', [\App\Http\Controllers\Admin\UserDepartmentPostController::class, 'getAllDepartment']);
+});
+
+Route::get('testEhsan', function () {
+    dd(\App\Models\User::find(1)->createToken('apiToken'));
 });
 
 
-Route::get('/testEhsan', function () {
-    dd('testEhsan');
-});

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Traits\Admin\PermissionRole;
+namespace App\Services\PermissionRole;
 
 
 use App\Models\Role;

@@ -10,19 +10,18 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('permissions', function (Blueprint $table) {
+        Schema::create('user_posts', function (Blueprint $table) {
             $table->id();
 
             $table->string('name');
 
-            $table->string('persian_name');
+            $table->integer('value')->default(1);
 
-            $table->bigInteger('permission_category_id')->unsigned()->nullable();
+            $table->bigInteger('creator_id')->unsigned();
 
-            $table->foreign('permission_category_id')->references('id')->on('permission_categories');
+            $table->foreign('creator_id')->references('id')->on('users');
 
             $table->timestamps();
-
         });
     }
 
@@ -31,6 +30,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('permissions');
+        Schema::dropIfExists('user_posts');
     }
 };

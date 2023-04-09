@@ -1,19 +1,18 @@
 <?php
 
 
-namespace App\Traits\Admin\PermissionRole;
+namespace App\Services\PermissionRole;
 
 
 use App\Models\Permission;
 use Illuminate\Support\Facades\Cache;
 
-
-trait HasPermission
+trait HasPermissionRole
 {
 
     public function permissions()
     {
-        return $this->morphedByMany(Permission::class, 'userable', 'user_has_accesses');
+        return $this->belongsToMany(Permission::class);
     }
 
     public function givePermissionTo(array $permissions)
@@ -66,23 +65,6 @@ trait HasPermission
 
     }
 
-    public function hasPermissionThroughRole($permission)
-    {
-
-        $roles = Cache::remember('userRole-' . $this->mobile, 50, function () {
-            return $this->getAllRole();
-        });
-
-        $permissionRoles = Permission::where('name', $permission)->first()->roles;
-
-        foreach ($permissionRoles as $keyRole => $rowRole) {
-            if ($roles->contains('id', $rowRole->id)) return true;
-        }
-
-        return false;
-
-    }
-
     private function getAllPermission()
     {
         return $this->permissions;
@@ -95,7 +77,7 @@ trait HasPermission
 
     private function cacheUserPermission($permissions)
     {
-        Cache::put('userPermission-' . $this->mobile, $permissions, 50);
+        Cache::put('permissionRole', $permissions, 50);
     }
 
 }

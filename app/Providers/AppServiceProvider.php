@@ -2,6 +2,14 @@
 
 namespace App\Providers;
 
+use App\Models\Permission;
+use App\Models\PermissionCategory;
+use App\Models\UserDepartment;
+use App\Models\UserPost;
+use App\Observers\PermissionCategoryObserver;
+use App\Observers\PermissionObserver;
+use App\Observers\UserDepartmentObserver;
+use App\Observers\UserPostObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +27,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        UserPost::observe(UserPostObserver::class);
+        UserDepartment::observe(UserDepartmentObserver::class);
+        Permission::observe(PermissionObserver::class);
+        PermissionCategory::observe(PermissionCategoryObserver::class);
     }
 }

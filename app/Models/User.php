@@ -3,8 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Traits\Admin\PermissionRole\HasRole;
-use App\Traits\Admin\PermissionRole\HasPermission;
+use App\Services\PermissionRole\HasRole;
+use App\Services\PermissionRole\HasPermission;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
