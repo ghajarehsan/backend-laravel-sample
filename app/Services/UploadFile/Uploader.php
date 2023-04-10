@@ -4,6 +4,7 @@
 namespace App\Services\UploadFile;
 
 
+use App\Jobs\RemoveUploadedFileJob;
 use App\Models\UploadFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +24,7 @@ class Uploader
         $this->file = $this->request->file;
     }
 
-    public function upload($model = null, $model_id = null)
+    public function upload($model = null, $model_id = null, $is_private = 1)
     {
 
         DB::beginTransaction();
@@ -34,9 +35,9 @@ class Uploader
 
             if ($validation->fails()) throw new \Exception(serialize($validation->getMessageBag()), 400);
 
-            $fileName = $this->uploadPhysically();
+            $fileName = $this->uploadPhysically($is_private);
 
-            $file = $this->fillDatabase($fileName, $model, $model_id);
+            $file = $this->fillDatabase($fileName, $model, $model_id, $is_private);
 
             DB::commit();
 
@@ -56,69 +57,54 @@ class Uploader
 
     }
 
-    private function fillDatabase($fileName, $model, $model_id)
+    private function fillDatabase($fileName, $model, $model_id, $is_private)
     {
 
         $fileType = $this->getFileType();
 
         $file = UploadFile::Create([
             'creator_id' => auth()->user()->id,
-            'upload_file_type'=>'asd',
-            'upload_file_id'=>2,
             'name' => $this->request->name,
-            'path' => ($this->is_private() ? 'private/' : 'public/') . $fileName,
+            'upload_file_type' => $model,
+            'upload_file_id' => $model_id,
+            'path' => ($is_private ? 'private/' : 'public/') . $fileName,
             'size' => $this->getFileSize(),
-            'is_private' => $this->is_private(),
+            'is_private' => $is_private,
             'mime' => $fileType,
             'extension' => $this->getFileExtension()
         ]);
 
-        switch ($model) {
-            case 'session':
-            {
-                $model = null;
-                break;
-            }
-        }
 
-        if ($model != null) {
-            $file->update([
-                'fileable_type' => $model,
-                'fileable_id' => $model_id
-            ]);
-        }
-
-//        RemoveUploadedFileJob::dispatch($file)->delay(1800);
+        if ($is_private) RemoveUploadedFileJob::dispatch($file)->delay(1800);
 
         return $file;
     }
 
-
     private function uploadValidation()
     {
 
+        $max_file_upload = 60;
+
         $validation = Validator::make($this->request->all(), [
             'name' => 'required|string|max:50|min:1',
-            'file' => 'required|mimes:xlsx,doc,docx,ppt,pptx,ods,odt,odp,pdf,zip,rar,avi,mpeg,quicktime,mp4,jpeg,jpg,png,tiff,gif|file|max:100000',
-            'is_private' => 'boolean'
+            'file' => 'required|mimes:xlsx,doc,docx,ppt,pptx,ods,odt,odp,pdf,zip,rar,avi,mpeg,quicktime,mp4,jpeg,jpg,png,tiff,gif|file|max:' . $max_file_upload . '',
         ], [
             'name.required' => 'نام فایل الزامی میباشد',
             'file.mimetypes' => 'نوع فایل نا معتبر میباشد',
             'file.required' => 'فایل الزامی میباشد',
-            'file.max' => 'فایل آپلود شده نهایتا میتواند 50 مگ باشد',
-            'is_private' => 'نحوه ذخیره فایل یا خصوصی است یا عمومی'
+            'file.max' => 'فایل آپلود شده نهایتا میتواند ' . $max_file_upload . ' کیلو بایت باشد',
         ]);
 
         return $validation;
 
     }
 
-    private function uploadPhysically()
+    private function uploadPhysically($is_private)
     {
 
         $name = $this->createName();
 
-        $method = $this->getMethod();
+        $method = $this->getMethod($is_private);
 
         $this->storage->$method($this->getFileType(), $this->file, $name);
 
@@ -145,9 +131,9 @@ class Uploader
             $this->getFileExtension();
     }
 
-    private function getMethod()
+    private function getMethod($is_private)
     {
-        return $this->is_private() ? 'uploadFileAsPrivate' : 'uploadFileAsPublic';
+        return $is_private ? 'uploadFileAsPrivate' : 'uploadFileAsPublic';
     }
 
     private function getFileClientMimeType()
@@ -160,14 +146,8 @@ class Uploader
         return $this->file->extension();
     }
 
-    private function is_private()
-    {
-        return $this->request->is_private == 1 ? 1 : 0;
-    }
-
     private function getFileType()
     {
-
 
         $type = [
             'image/jpg' => 'image',

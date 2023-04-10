@@ -13,3 +13,7 @@ Route::group(['prefix' => 'auth'], function () {
 Route::group(['prefix' => 'uploadFile', 'middleware' => 'auth:sanctum'], function () {
     Route::post('upload', [\App\Http\Controllers\Common\UploadFileController::class, 'uploadFile']);
 });
+
+Route::get('testEhsan', function () {
+    dd(\Illuminate\Support\Facades\Hash::make('Momenpour1234#'));
+});

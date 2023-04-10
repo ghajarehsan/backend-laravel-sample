@@ -11,16 +11,8 @@ interface UploadFileInterface
 
     public function uploadFileAsPublic($type, $file, $name);
 
-    public function moveFile();
+    public function download($file);
 
-    public function download();
-
-    public function deleteFile();
-
-    public function renameFile();
-
-    public function sizeFile();
-
-
+    public function deleteFile($file);
 
 }

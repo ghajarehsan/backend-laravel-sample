@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Common;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Services\UploadFile\Uploader;
 use Illuminate\Http\Request;
 
@@ -23,7 +24,7 @@ class UploadFileController extends Controller
 
         try {
 
-            return $this->uploader->upload();
+            return $this->uploader->upload(User::class, auth()->user()->id,1);
 
         } catch (\Exception $exception) {
 

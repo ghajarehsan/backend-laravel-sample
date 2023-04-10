@@ -20,29 +20,17 @@ class LocalStorageDriver implements UploadFileInterface
         StorageDriver::disk('public')->putFileAs('', $file, $name);
     }
 
-    public function moveFile()
+    public function download($file)
     {
+        if (!StorageDriver::exists($file->path)) throw new \Exception('فایل مورد نظر موجود نمیباشد');
 
+        return StorageDriver::download($file->path);
     }
 
-    public function download()
+    public function deleteFile($file)
     {
-
-    }
-
-    public function deleteFile()
-    {
-
-    }
-
-    public function renameFile()
-    {
-
-    }
-
-    public function sizeFile()
-    {
-
+        if (!StorageDriver::exists($file->path)) throw new \Exception('فایل مورد نظر موجود نمیباشد');
+        return StorageDriver::delete($file->path);
     }
 
 }

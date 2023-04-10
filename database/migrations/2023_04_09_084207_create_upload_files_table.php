@@ -17,7 +17,9 @@ return new class extends Migration {
 
             $table->foreign('creator_id')->references('id')->on('users');
 
-            $table->morphs('upload_file');
+            $table->string('upload_file_type')->nullable();
+
+            $table->bigInteger('upload_file_id')->unsigned()->nullable();
 
             $table->string('name');
 
@@ -33,7 +35,7 @@ return new class extends Migration {
 
             $table->string('extension');
 
-            $table->tinyInteger('status')->default(0);
+            $table->tinyInteger('status')->default(1);
 
             $table->timestamps();
         });
