@@ -24,7 +24,7 @@ class Uploader
         $this->file = $this->request->file;
     }
 
-    public function upload($model = null, $model_id = null, $is_private = 1)
+    public function upload($model = null, $model_id = null, $is_private = 1, array $resize = null)
     {
 
         DB::beginTransaction();
@@ -35,7 +35,7 @@ class Uploader
 
             if ($validation->fails()) throw new \Exception(serialize($validation->getMessageBag()), 400);
 
-            $fileName = $this->uploadPhysically($is_private);
+            $fileName = $this->uploadPhysically($is_private, $resize);
 
             $file = $this->fillDatabase($fileName, $model, $model_id, $is_private);
 
@@ -67,7 +67,7 @@ class Uploader
             'name' => $this->request->name,
             'upload_file_type' => $model,
             'upload_file_id' => $model_id,
-            'path' => ($is_private ? 'private/' : 'public/') . $fileName,
+            'path' => ($is_private ? 'private/' : 'storage/') . $fileName,
             'size' => $this->getFileSize(),
             'is_private' => $is_private,
             'mime' => $fileType,
@@ -83,7 +83,7 @@ class Uploader
     private function uploadValidation()
     {
 
-        $max_file_upload = 60;
+        $max_file_upload = 6000;
 
         $validation = Validator::make($this->request->all(), [
             'name' => 'required|string|max:50|min:1',
@@ -99,23 +99,40 @@ class Uploader
 
     }
 
-    private function uploadPhysically($is_private)
+    private function uploadPhysically($is_private, $resize)
     {
 
-        $name = $this->createName();
+        $name = $this->createName($resize, $is_private);
 
         $method = $this->getMethod($is_private);
 
-        $this->storage->$method($this->getFileType(), $this->file, $name);
+        $this->storage->$method($this->getFileType(), $this->file, $name, $resize);
 
         return $name;
 
     }
 
-    private function createName()
+    private function createName($resize, $is_private)
     {
 
-        return date('Y') .
+        $resizeName = date('Y') .
+            '/' .
+            date('m') .
+            '/' .
+            date('d') .
+            '/' .
+            $this->getFileType() .
+            '/' . rand() .
+            '/' .
+            auth()->user()->id .
+            '-' .
+            date('H-i-s') .
+            ',orginal' .
+            '.' .
+            $this->getFileExtension();
+
+
+        $normalName = date('Y') .
             '/' .
             date('m') .
             '/' .
@@ -129,6 +146,8 @@ class Uploader
             date('H-i-s') .
             '.' .
             $this->getFileExtension();
+
+        return count($resize) > 0 && $is_private == 0 ? $resizeName : $normalName;
     }
 
     private function getMethod($is_private)
@@ -141,7 +160,7 @@ class Uploader
         return $this->file->getClientMimeType();
     }
 
-    private function getFileExtension()
+    public function getFileExtension()
     {
         return $this->file->extension();
     }

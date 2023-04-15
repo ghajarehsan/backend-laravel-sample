@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Services\UploadFile\Uploader;
 use Illuminate\Http\Request;
 
+
 class UploadFileController extends Controller
 {
 
@@ -24,7 +25,18 @@ class UploadFileController extends Controller
 
         try {
 
-            return $this->uploader->upload(User::class, auth()->user()->id,1);
+            $resize = [
+                [
+                    'width'=>100,
+                    'height'=>200
+                ],
+                [
+                    'width'=>400,
+                    'height'=>600
+                ]
+            ];
+
+            return $this->uploader->upload(User::class, auth()->user()->id, 0, $resize);
 
         } catch (\Exception $exception) {
 
