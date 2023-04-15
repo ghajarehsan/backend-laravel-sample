@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             UserDepartmentSeeder::class,
             PermissionCategorySeeder::class,
             GivePermissionToUserSeeder::class,
+            ProductBrandSeeder::class
         ]);
 
     }
