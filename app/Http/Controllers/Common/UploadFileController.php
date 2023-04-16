@@ -28,15 +28,16 @@ class UploadFileController extends Controller
 
             $resize = [
                 [
-                    'width'=>100,
-                    'height'=>200
+                    'width' => 100,
+                    'height' => 200
                 ],
                 [
-                    'width'=>400,
-                    'height'=>600
+                    'width' => 400,
+                    'height' => 600
                 ]
             ];
 
+            return $this->uploader->getFilePaths([1,2]);
             return $this->uploader->upload(User::class, auth()->user()->id, 0, $resize);
 
         } catch (\Exception $exception) {
