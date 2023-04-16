@@ -4,10 +4,12 @@ namespace App\Providers;
 
 use App\Models\Permission;
 use App\Models\PermissionCategory;
+use App\Models\ProductBrand;
 use App\Models\UserDepartment;
 use App\Models\UserPost;
 use App\Observers\PermissionCategoryObserver;
 use App\Observers\PermissionObserver;
+use App\Observers\ProductBrandObserver;
 use App\Observers\UserDepartmentObserver;
 use App\Observers\UserPostObserver;
 use Illuminate\Support\ServiceProvider;
@@ -31,5 +33,6 @@ class AppServiceProvider extends ServiceProvider
         UserDepartment::observe(UserDepartmentObserver::class);
         Permission::observe(PermissionObserver::class);
         PermissionCategory::observe(PermissionCategoryObserver::class);
+        ProductBrand::observe(ProductBrandObserver::class);
     }
 }

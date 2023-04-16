@@ -35,12 +35,13 @@ Route::group(['prefix' => 'userDepartmentPost'], function () {
 
 //product brand
 Route::group(['prefix' => 'brand'], function () {
-    Route::post('newBrand', [\App\Http\Controllers\Admin\BrandController::class, 'newBrand']);
-    Route::post('uploadFileNewBrand', [\App\Http\Controllers\Admin\BrandController::class, 'uploadFileNewBrand']);
+    Route::post('newProductBrand', [\App\Http\Controllers\Admin\BrandController::class, 'newProductBrand']);
+    Route::post('editProductBrand/{productBrandId}', [\App\Http\Controllers\Admin\BrandController::class, 'editProductBrand']);
+    Route::post('deleteProductBrand/{productBrandId}', [\App\Http\Controllers\Admin\BrandController::class, 'deleteProductBrand']);
+    Route::post('uploadFileNewProductBrand', [\App\Http\Controllers\Admin\BrandController::class, 'uploadFileNewProductBrand']);
+    Route::get('getAllProductBrand', [\App\Http\Controllers\Admin\BrandController::class, 'getAllProductBrand']);
 });
 
-Route::get('testEhsan', function () {
-    dd(\App\Models\User::find(1)->createToken('apiToken'));
-});
+
 
 
