@@ -212,4 +212,35 @@ class Uploader
         return $this->file->getSize();
     }
 
+    public function getFilePaths(array $filesId)
+    {
+
+        try {
+
+            $paths = [];
+
+            foreach ($filesId as $keyFileId => $rowFileId) {
+                $uploadFile = UploadFile::find($rowFileId);
+                if ($uploadFile->is_private == 1 && $uploadFile->creator_id != auth()->user()->id) throw new \Exception('فایل خصوصی میباشد و نمیتواند به جای دیگر اساین کنید');
+                $paths[$keyFileId] = unserialize($uploadFile->main_path);
+            }
+
+            return $paths;
+
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            $messages = '';
+            if ($exception->getCode() == 400) $messages = unserialize($exception->getMessage());
+            else $messages = $exception->getMessage();
+            return response()->json([
+                'data' => null,
+                'meta' => [
+                    'messages' => $messages,
+                    'status' => 400
+                ]
+            ], 200);
+        }
+
+    }
+
 }

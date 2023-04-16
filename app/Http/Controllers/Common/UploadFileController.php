@@ -39,6 +39,7 @@ class UploadFileController extends Controller
                 ]
             ];
 
+            return $this->uploader->getFilePaths([1,2]);
             return $this->uploader->upload(User::class, auth()->user()->id, 0, $resize);
 
         } catch (\Exception $exception) {
