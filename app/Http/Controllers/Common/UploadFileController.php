@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Common;
 
 use App\Http\Controllers\Controller;
+use App\Models\UploadFile;
 use App\Models\User;
 use App\Services\UploadFile\Uploader;
 use Illuminate\Http\Request;
