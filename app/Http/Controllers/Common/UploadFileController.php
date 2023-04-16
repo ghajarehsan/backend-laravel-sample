@@ -26,14 +26,16 @@ class UploadFileController extends Controller
 
         try {
 
+//            dd(unserialize('a:3:{i:0;s:63:"storage/User/2023/04/16/image/1239656207/1-06-43-22,orginal.png";i:1;s:63:"storage/User/2023/04/16/image/1239656207/1-06-43-22,100x200.png";i:2;s:63:"storage/User/2023/04/16/image/1239656207/1-06-43-22,400x600.png";}'));
+
             $resize = [
                 [
-                    'width'=>100,
-                    'height'=>200
+                    'width' => 100,
+                    'height' => 200
                 ],
                 [
-                    'width'=>400,
-                    'height'=>600
+                    'width' => 400,
+                    'height' => 600
                 ]
             ];
 

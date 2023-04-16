@@ -36,6 +36,7 @@ Route::group(['prefix' => 'userDepartmentPost'], function () {
 //product brand
 Route::group(['prefix' => 'brand'], function () {
     Route::post('newBrand', [\App\Http\Controllers\Admin\BrandController::class, 'newBrand']);
+    Route::post('uploadFileNewBrand', [\App\Http\Controllers\Admin\BrandController::class, 'uploadFileNewBrand']);
 });
 
 Route::get('testEhsan', function () {
