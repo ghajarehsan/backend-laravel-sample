@@ -18,7 +18,7 @@ class ProductBrandSeeder extends Seeder
             [
                 'title' => 'ال جی',
                 'title_en' => 'LG',
-                'image' => null,
+                'images' => null,
                 'creator_id' => User::find(1)->id,
                 'created_at' => now(),
                 'updated_at' => now()

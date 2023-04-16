@@ -30,7 +30,8 @@ class BrandController extends Controller
 
             $validation = Validator::make($this->request->all(), [
                 'title' => 'required|string|max:100',
-                'title_en' => 'required|string|max:100'
+                'title_en' => 'required|string|max:100',
+                'files_id' => 'required|string|max:100'
             ]);
 
             if ($validation->fails()) throw new \Exception(serialize($validation->getMessageBag()), 400);
@@ -38,7 +39,8 @@ class BrandController extends Controller
             $productBrand = ProductBrand::create([
                 'title' => $this->request->title,
                 'title_en' => $this->request->title_en,
-                'creator_id' => auth()->user()->id
+                'creator_id' => auth()->user()->id,
+
             ]);
 
             DB::commit();
@@ -81,14 +83,18 @@ class BrandController extends Controller
                 ]
             ];
 
-           return $this->uploader->upload(ProductBrand::class, null, 0, $resize);
-
-
+            $fileId = $this->uploader->upload(ProductBrand::class, null, 0, $resize)->id;
 
             DB::commit();
 
             return response()->json([
-
+                'data' => [
+                    'fileId' => $fileId
+                ],
+                'meta' => [
+                    'status' => 200,
+                    'messages' => 'file of brand was uploaded successfully'
+                ]
             ], 200);
 
         } catch (\Exception $exception) {

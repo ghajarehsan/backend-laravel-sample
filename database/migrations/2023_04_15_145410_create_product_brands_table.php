@@ -17,7 +17,7 @@ return new class extends Migration {
 
             $table->string('title_en');
 
-            $table->string('image')->nullable();
+            $table->string('images')->nullable();
 
             $table->bigInteger('creator_id')->unsigned();
 
