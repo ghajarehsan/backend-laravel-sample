@@ -41,6 +41,8 @@ class Uploader
 
             DB::commit();
 
+            return $file;
+
 
         } catch (\Exception $exception) {
             DB::rollBack();
