@@ -23,6 +23,8 @@ return new class extends Migration {
 
             $table->string('name');
 
+            $table->text('main_path');
+
             $table->string('path');
 
             $table->integer('size');

@@ -33,7 +33,7 @@ class RemoveUploadedFileJob implements ShouldQueue
     {
         try {
             $file = $this->file;
-            if ($file->upload_file_type == null && $file->upload_file_id == null && $file->is_private) {
+            if ($file->upload_file_id == null) {
                 if (resolve(LocalStorageDriver::class)->deleteFile($file)) {
                     $file->status = 0;
                     $file->save();

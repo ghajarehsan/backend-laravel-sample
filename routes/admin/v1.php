@@ -33,8 +33,15 @@ Route::group(['prefix' => 'userDepartmentPost'], function () {
     Route::get('getAllDepartment/{department_id?}', [\App\Http\Controllers\Admin\UserDepartmentPostController::class, 'getAllDepartment'])->middleware('permission:getAllDepartment');
 });
 
-Route::get('testEhsan', function () {
-    dd(\App\Models\User::find(1)->createToken('apiToken'));
+//product brand
+Route::group(['prefix' => 'brand'], function () {
+    Route::post('newProductBrand', [\App\Http\Controllers\Admin\BrandController::class, 'newProductBrand']);
+    Route::post('editProductBrand/{productBrandId}', [\App\Http\Controllers\Admin\BrandController::class, 'editProductBrand']);
+    Route::post('deleteProductBrand/{productBrandId}', [\App\Http\Controllers\Admin\BrandController::class, 'deleteProductBrand']);
+    Route::post('uploadFileNewProductBrand', [\App\Http\Controllers\Admin\BrandController::class, 'uploadFileNewProductBrand']);
+    Route::get('getAllProductBrand', [\App\Http\Controllers\Admin\BrandController::class, 'getAllProductBrand']);
 });
+
+
 
 

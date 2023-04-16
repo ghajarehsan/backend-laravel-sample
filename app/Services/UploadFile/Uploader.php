@@ -24,22 +24,25 @@ class Uploader
         $this->file = $this->request->file;
     }
 
-    public function upload($model = null, $model_id = null, $is_private = 1)
+    public function upload($model, $model_id, $is_private = 1, array $resize = null)
     {
 
         DB::beginTransaction();
 
         try {
 
-            $validation = $this->uploadValidation();
+            $validation = $this->uploadValidation($model);
 
             if ($validation->fails()) throw new \Exception(serialize($validation->getMessageBag()), 400);
 
-            $fileName = $this->uploadPhysically($is_private);
+            $fileName = $this->uploadPhysically($is_private, $resize, $model);
 
             $file = $this->fillDatabase($fileName, $model, $model_id, $is_private);
 
             DB::commit();
+
+            return $file;
+
 
         } catch (\Exception $exception) {
             DB::rollBack();
@@ -67,11 +70,12 @@ class Uploader
             'name' => $this->request->name,
             'upload_file_type' => $model,
             'upload_file_id' => $model_id,
-            'path' => ($is_private ? 'private/' : 'public/') . $fileName,
+            'main_path' => serialize($fileName),
+            'path' => $fileName[0],
             'size' => $this->getFileSize(),
             'is_private' => $is_private,
             'mime' => $fileType,
-            'extension' => $this->getFileExtension()
+            'extension' => $this->getFileExtension(),
         ]);
 
 
@@ -80,10 +84,12 @@ class Uploader
         return $file;
     }
 
-    private function uploadValidation()
+    private function uploadValidation($model)
     {
 
-        $max_file_upload = 60;
+        if (!class_exists($model)) throw new \Exception('مدل دریافتی وجود ندارد');
+
+        $max_file_upload = 6000;
 
         $validation = Validator::make($this->request->all(), [
             'name' => 'required|string|max:50|min:1',
@@ -99,23 +105,48 @@ class Uploader
 
     }
 
-    private function uploadPhysically($is_private)
+    private function uploadPhysically($is_private, $resize, $model)
     {
 
-        $name = $this->createName();
+        $name = $this->createName($resize, $is_private, $model);
 
         $method = $this->getMethod($is_private);
 
-        $this->storage->$method($this->getFileType(), $this->file, $name);
+        $mainPath = $this->storage->$method($this->getFileType(), $this->file, $name, $resize);
 
-        return $name;
+        return $mainPath;
 
     }
 
-    private function createName()
+    private function createName($resize, $is_private, $model)
     {
 
-        return date('Y') .
+        $model = explode('\\', $model)[2];
+
+        $resizeName =
+            $model .
+            '/' .
+            date('Y') .
+            '/' .
+            date('m') .
+            '/' .
+            date('d') .
+            '/' .
+            $this->getFileType() .
+            '/' . rand() .
+            '/' .
+            auth()->user()->id .
+            '-' .
+            date('H-i-s') .
+            ',orginal' .
+            '.' .
+            $this->getFileExtension();
+
+
+        $normalName =
+            $model .
+            '/' .
+            date('Y') .
             '/' .
             date('m') .
             '/' .
@@ -129,6 +160,8 @@ class Uploader
             date('H-i-s') .
             '.' .
             $this->getFileExtension();
+
+        return count($resize) > 0 && $is_private == 0 ? $resizeName : $normalName;
     }
 
     private function getMethod($is_private)
@@ -141,7 +174,7 @@ class Uploader
         return $this->file->getClientMimeType();
     }
 
-    private function getFileExtension()
+    public function getFileExtension()
     {
         return $this->file->extension();
     }
@@ -177,6 +210,37 @@ class Uploader
     private function getFileSize()
     {
         return $this->file->getSize();
+    }
+
+    public function getFilePaths(array $filesId)
+    {
+
+        try {
+
+            $paths = [];
+
+            foreach ($filesId as $keyFileId => $rowFileId) {
+                $uploadFile = UploadFile::find($rowFileId);
+                if ($uploadFile->is_private == 1 && $uploadFile->creator_id != auth()->user()->id) throw new \Exception('فایل خصوصی میباشد و نمیتواند به جای دیگر اساین کنید');
+                $paths[$keyFileId] = unserialize($uploadFile->main_path);
+            }
+
+            return $paths;
+
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            $messages = '';
+            if ($exception->getCode() == 400) $messages = unserialize($exception->getMessage());
+            else $messages = $exception->getMessage();
+            return response()->json([
+                'data' => null,
+                'meta' => [
+                    'messages' => $messages,
+                    'status' => 400
+                ]
+            ], 200);
+        }
+
     }
 
 }
