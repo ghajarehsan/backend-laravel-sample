@@ -24,22 +24,23 @@ class Uploader
         $this->file = $this->request->file;
     }
 
-    public function upload($model = null, $model_id = null, $is_private = 1, array $resize = null)
+    public function upload($model, $model_id, $is_private = 1, array $resize = null)
     {
 
         DB::beginTransaction();
 
         try {
 
-            $validation = $this->uploadValidation();
+            $validation = $this->uploadValidation($model);
 
             if ($validation->fails()) throw new \Exception(serialize($validation->getMessageBag()), 400);
 
-            $fileName = $this->uploadPhysically($is_private, $resize);
+            $fileName = $this->uploadPhysically($is_private, $resize, $model);
 
             $file = $this->fillDatabase($fileName, $model, $model_id, $is_private);
 
             DB::commit();
+
 
         } catch (\Exception $exception) {
             DB::rollBack();
@@ -67,11 +68,12 @@ class Uploader
             'name' => $this->request->name,
             'upload_file_type' => $model,
             'upload_file_id' => $model_id,
-            'path' => ($is_private ? 'private/' : 'storage/') . $fileName,
+            'main_path' => serialize($fileName),
+            'path' => $fileName[0],
             'size' => $this->getFileSize(),
             'is_private' => $is_private,
             'mime' => $fileType,
-            'extension' => $this->getFileExtension()
+            'extension' => $this->getFileExtension(),
         ]);
 
 
@@ -80,8 +82,10 @@ class Uploader
         return $file;
     }
 
-    private function uploadValidation()
+    private function uploadValidation($model)
     {
+
+        if (!class_exists($model)) throw new \Exception('مدل دریافتی وجود ندارد');
 
         $max_file_upload = 6000;
 
@@ -99,23 +103,28 @@ class Uploader
 
     }
 
-    private function uploadPhysically($is_private, $resize)
+    private function uploadPhysically($is_private, $resize, $model)
     {
 
-        $name = $this->createName($resize, $is_private);
+        $name = $this->createName($resize, $is_private, $model);
 
         $method = $this->getMethod($is_private);
 
-        $this->storage->$method($this->getFileType(), $this->file, $name, $resize);
+        $mainPath = $this->storage->$method($this->getFileType(), $this->file, $name, $resize);
 
-        return $name;
+        return $mainPath;
 
     }
 
-    private function createName($resize, $is_private)
+    private function createName($resize, $is_private, $model)
     {
 
-        $resizeName = date('Y') .
+        $model = explode('\\', $model)[2];
+
+        $resizeName =
+            $model .
+            '/' .
+            date('Y') .
             '/' .
             date('m') .
             '/' .
@@ -132,7 +141,10 @@ class Uploader
             $this->getFileExtension();
 
 
-        $normalName = date('Y') .
+        $normalName =
+            $model .
+            '/' .
+            date('Y') .
             '/' .
             date('m') .
             '/' .
