@@ -42,6 +42,15 @@ Route::group(['prefix' => 'brand'], function () {
     Route::get('getAllProductBrand', [\App\Http\Controllers\Admin\BrandController::class, 'getAllProductBrand']);
 });
 
+//product category
+Route::group(['prefix' => 'productCategory'], function () {
+    Route::post('newProductCategory', [\App\Http\Controllers\Admin\ProductCategoryController::class, 'newProductCategory']);
+    Route::post('editProductCategory/{productCategoryId}', [\App\Http\Controllers\Admin\ProductCategoryController::class, 'editProductCategory']);
+    Route::post('deleteProductCategory/{productCategoryId}', [\App\Http\Controllers\Admin\ProductCategoryController::class, 'deleteProductCategory']);
+    Route::get('getAllProductCategory/{productCategoryId?}', [\App\Http\Controllers\Admin\ProductCategoryController::class, 'getAllProductCategory']);
+    Route::post('uploadFileNewProductCategory', [\App\Http\Controllers\Admin\ProductCategoryController::class, 'uploadFileNewProductCategory']);
+});
+
 
 
 
