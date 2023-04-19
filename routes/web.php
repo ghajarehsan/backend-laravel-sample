@@ -13,6 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::match(['get','post'],'/', function () {
+    dd(\App\Models\User::where('mobile', '09362014771')->first()->createToken('apiToken')->plainTextToken);
 });

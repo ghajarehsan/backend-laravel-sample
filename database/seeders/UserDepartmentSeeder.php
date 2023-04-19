@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -17,14 +18,14 @@ class UserDepartmentSeeder extends Seeder
             [
                 'name' => 'وب سایت',
                 'parent_id' => null,
-                'creator_id' => 1,
+                'creator_id' => User::first()->id,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
                 'name' => 'توسعه سمت فرانت',
                 'parent_id' => null,
-                'creator_id' => 1,
+                'creator_id' => User::first()->id,
                 'created_at' => now(),
                 'updated_at' => now()
             ]

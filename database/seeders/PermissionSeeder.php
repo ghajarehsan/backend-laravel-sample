@@ -111,6 +111,102 @@ class PermissionSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now()
             ],
+            [
+                'name' => 'newProductBrand',
+                'persian_name' => 'اضافه کردن برند های محصولات وب سایت داتیس',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'editProductBrand',
+                'persian_name' => 'ویرایش برند های محصولات وب سایت داتیس',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'deleteProductBrand',
+                'persian_name' => 'حذف برند های محصولات وب سایت داتیس',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'getAllProductBrand',
+                'persian_name' => 'دسترسی به تمام برند های محصولات وب سایت داتیس',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'getAllProductBrand',
+                'persian_name' => 'دسترسی به تمام برند های محصولات وب سایت داتیس',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'newProductCategory',
+                'persian_name' => 'اضافه کردن کردن دسته بندی محصولات وب شاست داتیس',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'newProductCategory',
+                'persian_name' => 'اضافه کردن کردن دسته بندی محصولات وب سایت داتیس',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'editProductCategory',
+                'persian_name' => 'ویرایش کردن دسته بندی محصولات وب سایت داتیس',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'deleteProductCategory',
+                'persian_name' => 'حذف کردن دسته بندی محصولات وب سایت داتیس',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'getAllProductCategory',
+                'persian_name' => 'دسترسی به تمام دسته بندی های محصولات',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'newProductCategoryFilter',
+                'persian_name' => 'اضافه کردن فیلتر دسته بندی محصولات',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'editProductCategoryFilter',
+                'persian_name' => 'ویرایش فیلتر دسته بندی محصولات',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'deleteProductCategoryFilter',
+                'persian_name' => 'حذف فیلتر دسته بندی محصولات',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'newProductCategoryFilterOption',
+                'persian_name' => 'اضافه کردن آپشن فیلتر دسته بندی محصولات',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'editProductCategoryFilterOption',
+                'persian_name' => 'ویرایش آپشن فیلتر دسته بندی محصولات',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'deleteProductCategoryFilterOption',
+                'persian_name' => 'حذف آپشن فیلتر دسته بندی محصولات',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
         ]);
 
     }

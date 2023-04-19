@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ProductCategory;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -23,7 +24,7 @@ class ProductCategorySeeder extends Seeder
                 'slug' => 'مانیتور',
                 'images' => 'a:3:{i:0;s:70:"storage/Controllers/2023/04/17/image/1532847371/1-08-52-15,orginal.png";i:1;s:70:"storage/Controllers/2023/04/17/image/1532847371/1-08-52-15,100x200.png";i:2;s:70:"storage/Controllers/2023/04/17/image/1532847371/1-08-52-15,200x300.png";}',
                 'parent_id' => 0,
-                'creator_id' => User::find(1)->id,
+                'creator_id' => User::first()->id,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -34,7 +35,7 @@ class ProductCategorySeeder extends Seeder
                 'slug' => 'مانیتور-هتلی',
                 'images' => 'a:3:{i:0;s:70:"storage/Controllers/2023/04/17/image/1532847371/1-08-52-15,orginal.png";i:1;s:70:"storage/Controllers/2023/04/17/image/1532847371/1-08-52-15,100x200.png";i:2;s:70:"storage/Controllers/2023/04/17/image/1532847371/1-08-52-15,200x300.png";}',
                 'parent_id' => 1,
-                'creator_id' => User::find(1)->id,
+                'creator_id' => User::first()->id,
                 'created_at' => now(),
                 'updated_at' => now()
             ]
