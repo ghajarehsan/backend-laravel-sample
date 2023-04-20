@@ -17,6 +17,7 @@ use App\Observers\ProductCategoryObserver;
 use App\Observers\UserDepartmentObserver;
 use App\Observers\UserPostObserver;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -40,5 +41,6 @@ class AppServiceProvider extends ServiceProvider
         ProductBrand::observe(ProductBrandObserver::class);
         ProductCategory::observe(ProductCategoryObserver::class);
         ProductCategoryFilter::observe(ProductCategoryFilterObserver::class);
+        Schema::defaultStringLength(191);
     }
 }
