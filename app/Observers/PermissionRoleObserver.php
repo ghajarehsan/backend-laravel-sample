@@ -11,5 +11,7 @@ class PermissionRoleObserver implements \SplObserver
     public function update(SplSubject $subject)
     {
         Cache::forget('permissionRole');
+        Cache::forget('permissionCategory');
+        Cache::forget('allDatisPermissions');
     }
 }

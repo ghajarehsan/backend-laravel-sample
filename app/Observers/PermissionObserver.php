@@ -12,7 +12,9 @@ class PermissionObserver
      */
     public function created(Permission $permission): void
     {
-        //
+        Cache::forget('permissionCategory');
+        Cache::forget('allDatisPermissions');
+        Cache::forget('permissionRole');
     }
 
     /**
@@ -21,6 +23,8 @@ class PermissionObserver
     public function updated(Permission $permission): void
     {
         Cache::forget('permissionCategory');
+        Cache::forget('allDatisPermissions');
+        Cache::forget('permissionRole');
     }
 
     /**
@@ -28,7 +32,9 @@ class PermissionObserver
      */
     public function deleted(Permission $permission): void
     {
-        //
+        Cache::forget('permissionCategory');
+        Cache::forget('allDatisPermissions');
+        Cache::forget('permissionRole');
     }
 
     /**
@@ -36,7 +42,9 @@ class PermissionObserver
      */
     public function restored(Permission $permission): void
     {
-        //
+        Cache::forget('permissionCategory');
+        Cache::forget('allDatisPermissions');
+        Cache::forget('permissionRole');
     }
 
     /**
@@ -44,6 +52,8 @@ class PermissionObserver
      */
     public function forceDeleted(Permission $permission): void
     {
-        //
+        Cache::forget('permissionCategory');
+        Cache::forget('allDatisPermissions');
+        Cache::forget('permissionRole');
     }
 }
