@@ -21,6 +21,7 @@ Route::group(['prefix' => 'permission'], function () {
     Route::post('newPermissionCategory', [\App\Http\Controllers\Admin\PermissionRoleController::class, 'newPermissionCategory'])->middleware('permission:newPermissionCategory');
     Route::post('editPermissionCategory/{permissionCategory}', [\App\Http\Controllers\Admin\PermissionRoleController::class, 'editPermissionCategory'])->middleware('permission:editPermissionCategory');
     Route::get('getAllCategoryPermission', [\App\Http\Controllers\Admin\PermissionRoleController::class, 'getAllCategoryPermission'])->middleware('permission:getAllCategoryPermission');
+    Route::get('getAllPermission', [\App\Http\Controllers\Admin\PermissionRoleController::class, 'getAllPermission'])->middleware('permission:getAllCategoryPermission');
 });
 
 //department

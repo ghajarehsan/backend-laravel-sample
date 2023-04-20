@@ -8,6 +8,7 @@ use App\Services\PermissionRole\HasPermission;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Cache;
 use Laravel\Sanctum\HasApiTokens;
 use SplObserver;
 
@@ -69,6 +70,30 @@ class User extends Authenticatable implements \SplSubject
         foreach ($this->observers as $observer) {
             $observer->update($this);
         }
+    }
+
+    public function getUserPermission()
+    {
+        return Cache::remember('userPermission-' . $this->mobile, 21600, function () {
+            return $this->permissions()
+                ->leftJoin('permission_categories', function ($join) {
+                    $join->on('permissions.permission_category_id', '=', 'permission_categories.id');
+                })
+                ->select(
+                    'permissions.id', 'permissions.name', 'permissions.persian_name',
+                    'permission_categories.id as category_id', 'permission_categories.name as category_name'
+                )
+                ->get();
+        });
+    }
+
+    public function getUserRole()
+    {
+        return Cache::remember('userRole-' . $this->mobile, 21600, function () {
+            return $this->roles()
+                ->select('roles.id', 'roles.name', 'roles.persian_name')
+                ->get();
+        });
     }
 
 }
