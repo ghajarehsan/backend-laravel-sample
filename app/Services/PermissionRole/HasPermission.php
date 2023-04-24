@@ -83,7 +83,7 @@ trait HasPermission
 
     }
 
-    private function getAllPermission()
+    public function getAllPermission()
     {
         return $this->permissions;
     }
@@ -93,7 +93,7 @@ trait HasPermission
         return Permission::whereIn('name', $permissions)->get();
     }
 
-    private function cacheUserPermission($permissions)
+    public function cacheUserPermission($permissions)
     {
         Cache::put('userPermission-' . $this->mobile, $permissions, 50);
     }

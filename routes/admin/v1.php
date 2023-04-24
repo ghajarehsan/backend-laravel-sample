@@ -21,6 +21,7 @@ Route::group(['prefix' => 'permission'], function () {
     Route::post('newPermissionCategory', [\App\Http\Controllers\Admin\PermissionRoleController::class, 'newPermissionCategory'])->middleware('permission:newPermissionCategory');
     Route::post('editPermissionCategory/{permissionCategory}', [\App\Http\Controllers\Admin\PermissionRoleController::class, 'editPermissionCategory'])->middleware('permission:editPermissionCategory');
     Route::get('getAllCategoryPermission', [\App\Http\Controllers\Admin\PermissionRoleController::class, 'getAllCategoryPermission'])->middleware('permission:getAllCategoryPermission');
+    Route::get('getAllPermission', [\App\Http\Controllers\Admin\PermissionRoleController::class, 'getAllPermission'])->middleware('permission:getAllCategoryPermission');
 });
 
 //department
@@ -35,21 +36,36 @@ Route::group(['prefix' => 'userDepartmentPost'], function () {
 
 //product brand
 Route::group(['prefix' => 'brand'], function () {
-    Route::post('newProductBrand', [\App\Http\Controllers\Admin\BrandController::class, 'newProductBrand']);
-    Route::post('editProductBrand/{productBrandId}', [\App\Http\Controllers\Admin\BrandController::class, 'editProductBrand']);
-    Route::post('deleteProductBrand/{productBrandId}', [\App\Http\Controllers\Admin\BrandController::class, 'deleteProductBrand']);
-    Route::post('uploadFileNewProductBrand', [\App\Http\Controllers\Admin\BrandController::class, 'uploadFileNewProductBrand']);
-    Route::get('getAllProductBrand', [\App\Http\Controllers\Admin\BrandController::class, 'getAllProductBrand']);
+    Route::post('newProductBrand', [\App\Http\Controllers\Admin\BrandController::class, 'newProductBrand'])->middleware('permission:newProductBrand');
+    Route::post('editProductBrand/{productBrandId}', [\App\Http\Controllers\Admin\BrandController::class, 'editProductBrand'])->middleware('permission:editProductBrand');
+    Route::post('deleteProductBrand/{productBrandId}', [\App\Http\Controllers\Admin\BrandController::class, 'deleteProductBrand'])->middleware('permission:deleteProductBrand');
+    Route::post('uploadFileNewProductBrand', [\App\Http\Controllers\Admin\BrandController::class, 'uploadFileNewProductBrand'])->middleware('permission:newProductBrand');
+    Route::get('getAllProductBrand', [\App\Http\Controllers\Admin\BrandController::class, 'getAllProductBrand'])->middleware('permission:getAllProductBrand');
 });
 
 //product category
 Route::group(['prefix' => 'productCategory'], function () {
-    Route::post('newProductCategory', [\App\Http\Controllers\Admin\ProductCategoryController::class, 'newProductCategory']);
-    Route::post('editProductCategory/{productCategoryId}', [\App\Http\Controllers\Admin\ProductCategoryController::class, 'editProductCategory']);
-    Route::post('deleteProductCategory/{productCategoryId}', [\App\Http\Controllers\Admin\ProductCategoryController::class, 'deleteProductCategory']);
-    Route::get('getAllProductCategory/{productCategoryId?}', [\App\Http\Controllers\Admin\ProductCategoryController::class, 'getAllProductCategory']);
-    Route::post('uploadFileNewProductCategory', [\App\Http\Controllers\Admin\ProductCategoryController::class, 'uploadFileNewProductCategory']);
+    Route::group(['prefix' => 'category'], function () {
+        Route::post('newProductCategory', [\App\Http\Controllers\Admin\ProductCategoryController::class, 'newProductCategory'])->middleware('permission:newProductCategory');
+        Route::post('editProductCategory/{productCategoryId}', [\App\Http\Controllers\Admin\ProductCategoryController::class, 'editProductCategory'])->middleware('permission:editProductCategory');
+        Route::post('deleteProductCategory/{productCategoryId}', [\App\Http\Controllers\Admin\ProductCategoryController::class, 'deleteProductCategory'])->middleware('permission:deleteProductCategory');
+        Route::get('getAllProductCategory/{productCategoryId?}', [\App\Http\Controllers\Admin\ProductCategoryController::class, 'getAllProductCategory'])->middleware('permission:getAllProductCategory');
+        Route::post('uploadFileNewProductCategory', [\App\Http\Controllers\Admin\ProductCategoryController::class, 'uploadFileNewProductCategory'])->middleware('permission:newProductCategory');
+    });
+    Route::group(['prefix' => 'categoryFilter'], function () {
+        Route::post('newProductCategoryFilter', [\App\Http\Controllers\Admin\ProductCategoryController::class, 'newProductCategoryFilter'])->middleware('permission:newProductCategoryFilter');
+        Route::post('editProductCategoryFilter/{productCategoryFilterId}', [\App\Http\Controllers\Admin\ProductCategoryController::class, 'editProductCategoryFilter'])->middleware('permission:editProductCategoryFilter');
+        Route::post('deleteProductCategoryFilter/{productCategoryFilterId}', [\App\Http\Controllers\Admin\ProductCategoryController::class, 'deleteProductCategoryFilter'])->middleware('permission:deleteProductCategoryFilter');
+    });
+    Route::group(['prefix' => 'categoryFilterOption'], function () {
+        Route::post('newProductCategoryFilterOption', [\App\Http\Controllers\Admin\ProductCategoryController::class, 'newProductCategoryFilterOption'])->middleware('permission:newProductCategoryFilterOption');
+        Route::post('editProductCategoryFilterOption/{productCategoryFilterOptionId}', [\App\Http\Controllers\Admin\ProductCategoryController::class, 'editProductCategoryFilterOption'])->middleware('permission:editProductCategoryFilterOption');
+        Route::post('deleteProductCategoryFilterOption/{productCategoryFilterOptionId}', [\App\Http\Controllers\Admin\ProductCategoryController::class, 'deleteProductCategoryFilterOption'])->middleware('permission:deleteProductCategoryFilterOption');
+    });
 });
+
+
+
 
 
 

@@ -17,9 +17,11 @@ class GivePermissionToUserSeeder extends Seeder
 
         $allPermissions = Permission::all();
 
-        User::find(1)->permissions()->sync($allPermissions);
+        User::where('mobile', '09362014771')->first()->permissions()->sync($allPermissions);
 
-        User::find(2)->permissions()->sync($allPermissions);
+        User::where('mobile', '09351600320')->first()->permissions()->sync($allPermissions);
+
+        User::where('mobile', '09129439150')->first()->permissions()->sync($allPermissions);
 
     }
 }

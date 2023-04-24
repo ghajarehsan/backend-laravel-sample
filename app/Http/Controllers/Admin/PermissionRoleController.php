@@ -46,6 +46,8 @@ class PermissionRoleController extends Controller
 
             $permissions = $user->givePermissionTo($this->request->permissions);
 
+            if (count($permissions) == 0) throw new \Exception('اسم لاتین سطح دسترسی ارسالی اشتباه است');
+
             DB::commit();
 
             return response()->json([
@@ -594,6 +596,31 @@ class PermissionRoleController extends Controller
             ], 200);
         }
 
+    }
+
+    //getAllPermissions
+    public function getAllPermission()
+    {
+        try {
+            $permissions = Cache::remember('allDatisPermissions', 21600, function () {
+                return Permission::leftJoin('permission_categories', function ($join) {
+                    $join->on('permissions.permission_category_id', '=', 'permission_categories.id');
+                })
+                    ->select(
+                        'permissions.id', 'permissions.name', 'permissions.persian_name',
+                        'permission_categories.id as category_id', 'permission_categories.name as category_name'
+                    )
+                    ->get();
+            });
+            return $permissions;
+        } catch (\Exception $exception) {
+            return response()->json([
+                'meta' => [
+                    'status' => 400,
+                    'messages' => $exception->getMessage()
+                ]
+            ], 200);
+        }
     }
 
 }

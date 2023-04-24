@@ -34,7 +34,7 @@ trait UserPostTrait
 
             DB::commit();
 
-            $this->cachePosts();
+//            $this->cachePosts();
 
             return response()->json([
                 'data' => [

@@ -25,12 +25,17 @@ trait AuthOtp
 
             $code = rand(100000, 999999);
 
-            if (Cache::get('LoginOtp' . $this->request->mobile)) throw new \Exception('باید حداقل 3 دقیقه پس از ارسال کد گذشته باشد');
+           // if (Cache::get('LoginOtp' . $this->request->mobile)) throw new \Exception('باید حداقل 3 دقیقه پس از ارسال کد گذشته باشد');
 
             Cache::put('LoginOtp' . $this->request->mobile, $code, 180);
 
+            //return $code;
 
             return response()->json([
+                
+                'code' => [
+                    'code' => $code
+                ],
                 'data' => [
                     'messages' => 'کد با موفقیت ارسال گردید'
                 ],

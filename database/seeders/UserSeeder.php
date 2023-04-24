@@ -29,6 +29,14 @@ class UserSeeder extends Seeder
                 'username' => 'sadeghsou',
                 'email' => 'sou@gmail.com',
                 'password' => '123456789'
+            ],
+            [
+                'first_name' => 'علی',
+                'last_name' => 'حاجی آقا خانی',
+                'mobile' => '09351600320',
+                'username' => 'hajiaghakhani',
+                'email' => 'hajiaghakhani@gmail.com',
+                'password' => '123456789'
             ]
         ]);
     }

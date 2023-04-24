@@ -19,7 +19,7 @@ class ProductBrandSeeder extends Seeder
                 'title' => 'ال جی',
                 'title_en' => 'LG',
                 'images' => null,
-                'creator_id' => User::find(1)->id,
+                'creator_id' => User::first()->id,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -27,7 +27,7 @@ class ProductBrandSeeder extends Seeder
                 'title' => 'پنتوس',
                 'title_en' => 'PANTUS',
                 'image' => null,
-                'creator_id' => User::find(1)->id,
+                'creator_id' => User::first()->id,
                 'created_at' => now(),
                 'updated_at' => now()
             ]
