@@ -39,7 +39,7 @@ Route::group(['prefix' => 'brand'], function () {
     Route::post('newProductBrand', [\App\Http\Controllers\Admin\BrandController::class, 'newProductBrand'])->middleware('permission:newProductBrand');
     Route::post('editProductBrand/{productBrandId}', [\App\Http\Controllers\Admin\BrandController::class, 'editProductBrand'])->middleware('permission:editProductBrand');
     Route::post('deleteProductBrand/{productBrandId}', [\App\Http\Controllers\Admin\BrandController::class, 'deleteProductBrand'])->middleware('permission:deleteProductBrand');
-    Route::post('uploadFileNewProductBrand', [\App\Http\Controllers\Admin\BrandController::class, 'uploadFileNewProductBrand'])->middleware('permission:newProductBrand');
+    Route::post('uploadFileNewProductBrand', [\App\Http\Controllers\Admin\BrandController::class, 'uploadFileNewProductBrand']);
     Route::get('getAllProductBrand', [\App\Http\Controllers\Admin\BrandController::class, 'getAllProductBrand'])->middleware('permission:getAllProductBrand');
 });
 
